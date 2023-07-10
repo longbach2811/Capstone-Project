@@ -90,7 +90,7 @@ def elastic_search(var: str):
         result.append(f"{score} {title} {url_path}")
         
     es.indices.delete(index=index_name)
-    return "Got %d Hits:" % res['hits']['total']['value'], result
+    return {'hit result:': "Got %d Hits:" % res['hits']['total']['value'], 'result': result}
 
 def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=3, smooth=True):
     # img = pil_loader(img_path)
@@ -133,7 +133,7 @@ def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=3
             shape_size = 14
         else:
             shape_size = 7
-    return caption
+    return {'caption': caption}
 
 @app.get("/")
 async def root():
@@ -176,4 +176,4 @@ async def search(file: UploadFile = File(...)):
 
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
 
-    return elastic_search(output.replace('<start>','').replace('<eos>',''))
+    return elastic_search(output['caption'].replace('<start>','').replace('<eos>',''))
