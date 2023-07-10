@@ -14,7 +14,7 @@ def streamlit_app():
         uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
         if uploaded_file is not None:
-            response = requests.post("http://localhost:81/predict/", files={"file": uploaded_file})
+            response = requests.post("http://localhost:8000/predict/", files={"file": uploaded_file})
             output = response.json()
             
         if st.button("GET CAPTION HERE"):
@@ -26,7 +26,7 @@ def streamlit_app():
         st.title("Searching some products")
         uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
         if uploaded_file is not None:
-            response = requests.post("http://localhost:81/search/", files={"file": uploaded_file})
+            response = requests.post("http://localhost:8000/search/", files={"file": uploaded_file})
             output = response.json()
 
         if st.button("GET SOME RELATED PRODUCT HERE"):

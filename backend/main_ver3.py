@@ -23,27 +23,35 @@ from PIL import Image
 import requests
 from streamlit_app import streamlit_app
 
+import time
+
+import sys
+sys.path.append("../phase1-fashion-captioning")
 from dataset import pil_loader
 from decoder import Decoder
 from encoder import Encoder
 from train import data_transforms
+import time
 
-import sys
-sys.path.append("../phase1-fashion-captioning")
 
 app = FastAPI()
 
 from elasticsearch import Elasticsearch
 import pandas as pd
 
+hosts = ["http://localhost:9200"]
+DB = Elasticsearch(hosts)
+index_name = "hm-data"
+DB.indices.delete(index=index_name)
+df = pd.read_csv("data_women.csv")
+docs = df.to_dict(orient="records")
+for doc in docs:
+    DB.index(index=index_name, document=doc)
 
 def elastic_search(var: str):
-    hosts = ["http://localhost:9200"]
-    es = Elasticsearch(hosts)
-    index_name = "hm-data"
-
-    if not es.indices.exists(index=index_name):
-        es.indices.create(index=index_name, body={
+    start_time = time.time()
+    if not DB.indices.exists(index=index_name):
+        DB.indices.create(index=index_name, body={
             "mappings": {
                 "properties": {
                     "Url_path": {"type": "text"},
@@ -52,11 +60,12 @@ def elastic_search(var: str):
                 }
             }
         })
-    df = pd.read_csv("data_women.csv")
-    docs = df.to_dict(orient="records")
+    # # Add data
+    # df = pd.read_csv("data_women.csv")
+    # docs = df.to_dict(orient="records")
 
-    for doc in docs:
-        es.index(index=index_name, document=doc)
+    # for doc in docs:
+    #     es.index(index=index_name, document=doc)
     
     new_query = {
     "query_string": {
@@ -64,7 +73,7 @@ def elastic_search(var: str):
       "default_field": "Desc"
     },
     }
-    res = es.search(index=index_name, query=new_query, size=10)
+    res = DB.search(index=index_name, query=new_query, size=10)
     hits = res["hits"]["hits"]
     result = []
 
@@ -73,7 +82,8 @@ def elastic_search(var: str):
         url_path = hit["_source"]["Url_path"]
         result.append(f"{title} {url_path}")
         
-    es.indices.delete(index=index_name)
+    # es.indices.delete(index=index_name)
+    print(f"Elastic search time: {time.time() - start_time}s")
     return "Got %d Hits:" % res['hits']['total']['value'], result
 
 def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=3, smooth=True):
@@ -121,10 +131,11 @@ decoder = Decoder(vocabulary_size, encoder.dim)
 
 encoder.eval()
 decoder.eval()
-decoder.load_state_dict(torch.load('C:\workspace\Capstone-Project\phase1-fashion-captioning\model\model_resnet152_16.pth', map_location='cpu'))
+decoder.load_state_dict(torch.load('..\phase1-fashion-captioning\model_resnet152_v1\model_resnet152_16.pth', map_location='cpu'))
 
 @app.post("/search/")
 async def search(file: UploadFile = File(...)):
+    global DB
     filename = file.filename
     fileExtension = filename.split(".")[-1] in ("jpg", "jpeg", "png")
     if not fileExtension:
@@ -135,7 +146,9 @@ async def search(file: UploadFile = File(...)):
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image = Image.fromarray(image)
     image.save("abc.png")
+    start_time = time.time()
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
+    print(f'Model inference time: {time.time() - start_time}s')
     return {"image_path": "abc.png", "result": elastic_search(output.replace('<start>','').replace('<eos>',''))}
 
 
@@ -157,6 +170,9 @@ async def prediction(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    fastapi_thread = threading.Thread(target=uvicorn.run, args=("main_ver3:app",), kwargs={"host": "0.0.0.0", "port": 81, "log_level": "info", "reload": True, "workers": 1})
+    # Init DB
+    # DB = init_db()
+
+    fastapi_thread = threading.Thread(target=uvicorn.run, args=("main_ver3:app",), kwargs={"host": "0.0.0.0", "port": 8000, "log_level": "info", "reload": True, "workers": 4})
     fastapi_thread.start()
     streamlit_app()
