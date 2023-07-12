@@ -151,6 +151,10 @@ async def search(file: UploadFile = File(...)):
     print(f'Model inference time: {time.time() - start_time}s')
     return {"image_path": "abc.png", "result": elastic_search(output.replace('<start>','').replace('<eos>',''))}
 
+@app.post("/search-by-word/")
+async def search(var:str):
+    return {"result" : elastic_search(var)}
+
 
 @app.post("/predict/")
 async def prediction(file: UploadFile = File(...)):
