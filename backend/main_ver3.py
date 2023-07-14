@@ -86,7 +86,7 @@ def elastic_search(var: str):
     print(f"Elastic search time: {time.time() - start_time}s")
     return "Got %d Hits:" % res['hits']['total']['value'], result
 
-def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=3, smooth=True):
+def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=64, smooth=True):
     img = data_transforms(img)
     img = torch.FloatTensor(img)
     img = img.unsqueeze(0)
@@ -133,8 +133,8 @@ encoder.eval()
 decoder.eval()
 decoder.load_state_dict(torch.load('..\phase1-fashion-captioning\model_resnet152_v1\model_resnet152_16.pth', map_location='cpu'))
 
-@app.post("/search/")
-async def search(file: UploadFile = File(...)):
+@app.post("/search-by-image/")
+async def img_search(file: UploadFile = File(...)):
     global DB
     filename = file.filename
     fileExtension = filename.split(".")[-1] in ("jpg", "jpeg", "png")
@@ -152,7 +152,7 @@ async def search(file: UploadFile = File(...)):
     return {"image_path": "abc.png", "result": elastic_search(output.replace('<start>','').replace('<eos>',''))}
 
 @app.post("/search-by-word/")
-async def search(var:str):
+async def word_search(var:str):
     return {"result" : elastic_search(var)}
 
 
