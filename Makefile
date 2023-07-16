@@ -2,10 +2,16 @@
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
 
-all: down clone wheels build
+all: down elastic upload
 
 elastic:
 	docker-compose up -d elastic
+
+upload:
+	python upload_data_to_elastis_server.py
+
+down:
+	docker-compose down
 
 # clone:
 # 	./clone.sh
