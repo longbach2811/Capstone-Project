@@ -4,8 +4,8 @@
     <form>
       <div class="search-wrapper">
         <input type="text" placeholder="Search..." @input="handleInput" ref="input">
-        <div class="image-upload" @dragover="handleDragOver" @drop="handleDrop">
-        </div>
+        <!-- <div class="image-upload" @dragover="handleDragOver" @drop="handleDrop">
+        </div> -->
       </div>
       <button type="submit" @click.prevent="handleSubmit"><i class="fa fa-search"></i></button>
     </form>
