@@ -3,8 +3,14 @@ import uvicorn
 import numpy as np
 import nest_asyncio
 from enum import Enum
+
+
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
+
+
+
 import streamlit as st
 import requests
 import threading
@@ -36,13 +42,24 @@ import time
 
 app = FastAPI()
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 from elasticsearch import Elasticsearch
+from elasticsearch.exceptions import RequestError
+
 import pandas as pd
 
 hosts = ["http://localhost:9200"]
 DB = Elasticsearch(hosts)
 index_name = "hm-data"
-DB.indices.delete(index=index_name)
+# DB.indices.delete(index=index_name)
 df = pd.read_csv("data_women.csv")
 docs = df.to_dict(orient="records")
 for doc in docs:
@@ -51,15 +68,13 @@ for doc in docs:
 def elastic_search(var: str):
     start_time = time.time()
     if not DB.indices.exists(index=index_name):
-        DB.indices.create(index=index_name, body={
-            "mappings": {
-                "properties": {
-                    "Url_path": {"type": "text"},
-                    "Title": {"type": "text"},
-                    "Desc": {"type": "text"}
-                }
-            }
-        })
+        try:
+            DB.indices.create(index=index_name)
+            print(f"Index '{index_name}' created successfully.")
+        except RequestError as e:
+            print(f"Failed to create index '{index_name}': {e}")
+        else:
+            print(f"Index '{index_name}' already exists.")
     # # Add data
     # df = pd.read_csv("data_women.csv")
     # docs = df.to_dict(orient="records")
