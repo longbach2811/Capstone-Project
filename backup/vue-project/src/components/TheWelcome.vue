@@ -5,8 +5,6 @@
       <div class="search-wrapper">
         <input type="text" placeholder="Search..." @input="handleInput" ref="input">
         <div class="image-upload" @dragover="handleDragOver" @drop="handleDrop">
-          <label for="file-upload"><i class="fa fa-cloud-upload"></i> Upload Image</label>
-          <input id="file-upload" type="file" @change="handleUpload" ref="file"/>
         </div>
       </div>
       <button type="submit" @click.prevent="handleSubmit"><i class="fa fa-search"></i></button>
@@ -96,10 +94,11 @@
 
   form {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
     border-radius: 30px;
+    margin-right: 4px;
   }
 
   input[type="text"] {
