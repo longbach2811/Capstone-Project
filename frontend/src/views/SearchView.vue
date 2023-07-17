@@ -22,6 +22,7 @@
             v-for="product in products" 
             :productName=product.productName
             :imgSrc=product.imgSrc
+            :productURL=product.productURL
           ></SearchCard>
           <!-- <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
@@ -64,6 +65,7 @@ async function onSubmit() {
       return {
         productName: x.title,
         imgSrc: x.thumbnail,
+        productURL: x.url_path,
       }
     }
   );

@@ -1,5 +1,6 @@
 <template>
-  <figure class="snip1418"><img :src=imgSrc alt="sample85" />
+  <figure class="snip1418">
+    <img :src=imgSrc alt="sample85" />
     <!-- <div class="add-to-cart"> <i class="ion-android-add"></i><span>Add to Cart</span></div> -->
     <figcaption>
       <h3>{{ productName }}</h3>
@@ -7,7 +8,7 @@
       <div class="price">
         {{ productPrice }}
       </div>
-    </figcaption><a href="#"></a>
+    </figcaption><a :href=productURL target="_blank"></a>
   </figure>
 </template>
 
@@ -31,6 +32,10 @@ const props = defineProps({
   productPrice: {
     type: String,
     default: '$24.00',
+  },
+  productURL: {
+    type: String,
+    default: 'https://google.com'
   }
 })
 </script>
