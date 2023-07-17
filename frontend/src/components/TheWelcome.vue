@@ -65,7 +65,7 @@
 
 <style>
 
-  .logo {
+  /* .logo {
     margin-bottom: 20px;
   }
 
@@ -121,6 +121,6 @@
     font-size: 18px;
     cursor: pointer;
   }
-
+ */
 
 </style>
