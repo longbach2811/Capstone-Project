@@ -61,7 +61,7 @@ hosts = ["http://localhost:9200"]
 DB = Elasticsearch(hosts)
 index_name = "hm-data"
 # DB.indices.delete(index=index_name)
-df = pd.read_csv("../data/data_women.csv")
+df = pd.read_csv("../data/new_data_women.csv")
 docs = df.to_dict(orient="records")
 for doc in docs:
     DB.index(index=index_name, document=doc)
@@ -75,7 +75,9 @@ def elastic_search(var: str):
         except RequestError as e:
             print(f"Failed to create index '{index_name}': {e}")
         else:
-            print(f"Index '{index_name}' already exists.")
+            DB.indices.delete(index=index_name)
+            print(f"Old DB has been deleted")
+            
     # # Add data
     # df = pd.read_csv("data_women.csv")
     # docs = df.to_dict(orient="records")
@@ -96,7 +98,8 @@ def elastic_search(var: str):
     for hit in hits:
         title = hit["_source"]["Title"]
         url_path = hit["_source"]["Url_path"]
-        result.append(f"{title} {url_path}")
+        thumbnail = hit["_source"]["Thumbnail"]
+        result.append(f"{title} {url_path} {thumbnail}")
         
     # es.indices.delete(index=index_name)
     print(f"Elastic search time: {time.time() - start_time}s")
@@ -193,6 +196,6 @@ if __name__ == "__main__":
     # Init DB
     # DB = init_db()
 
-    fastapi_thread = threading.Thread(target=uvicorn.run, args=("main_ver3:app",), kwargs={"host": "0.0.0.0", "port": 8000, "log_level": "info", "reload": True, "workers": 4})
+    fastapi_thread = threading.Thread(target=uvicorn.run, args=("app:app",), kwargs={"host": "0.0.0.0", "port": 8000, "log_level": "info", "reload": True, "workers": 4})
     fastapi_thread.start()
     # streamlit_app()
