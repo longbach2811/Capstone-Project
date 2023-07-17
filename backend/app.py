@@ -89,7 +89,7 @@ def elastic_search(var: str):
       "default_field": "Desc"
     },
     }
-    res = DB.search(index=index_name, query=new_query, size=10)
+    res = DB.search(index=index_name, query=new_query, size=12)
     hits = res["hits"]["hits"]
     result = []
 
