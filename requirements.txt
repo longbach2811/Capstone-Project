@@ -1,2 +1,9 @@
 elasticsearch
 pandas
+
+# backend dependencies
+
+
+# ai dependencies
+
+
