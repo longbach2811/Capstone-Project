@@ -96,9 +96,9 @@ def elastic_search(var: str):
         title = hit["_source"]["Title"]
         url_path = hit["_source"]["Url_path"]
         thumbnail = hit["_source"]["Thumbnail"]
-        result.append({"title": {title},
-                       "url_path": {url_path},
-                       "thumbnail": {thumbnail}})
+        result.append({"title": title,
+                       "url_path": url_path,
+                       "thumbnail": thumbnail})
         
     # es.indices.delete(index=index_name)
     print(f"Elastic search time: {time.time() - start_time}s")

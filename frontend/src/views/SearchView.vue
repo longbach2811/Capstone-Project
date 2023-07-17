@@ -15,9 +15,15 @@
         </form>
       </div>
 
-      <div class="meal-result" v-if="isHavingData">
+      <div class="meal-result" v-if="products.length">
         <h2 class="subtitle">{{ searchSumary }}</h2>
         <div class="product-card-list">
+          <SearchCard 
+            v-for="product in products" 
+            :productName=product.productName
+            :imgSrc=product.imgSrc
+          ></SearchCard>
+          <!-- <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
@@ -28,8 +34,7 @@
           <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
-          <SearchCard class="product-card"/>
-          <SearchCard class="product-card"/>
+          <SearchCard class="product-card"/> -->
         </div>
       </div>
 
@@ -43,7 +48,7 @@ import { ref } from 'vue'
 import SearchCard from '../components/SearchCard.vue'
 const keywords = ref('')
 const searchSumary = ref('')
-const isHavingData = ref(false)
+const products = ref([])
 
 async function onSubmit() {
   const response = await fetch(`http://localhost:8000/search-by-word/?var=${keywords.value}`, {
@@ -53,8 +58,16 @@ async function onSubmit() {
   const data = await response.json();
   console.log(data);
   searchSumary.value = `Your search results (${data.result[0].toLowerCase().slice(0, -1)}):`;
-  isHavingData.value = true;
   console.log(searchSumary.value);
+  products.value = data.result[1].map(
+    (x) => { 
+      return {
+        productName: x.title,
+        imgSrc: x.thumbnail,
+      }
+    }
+  );
+  console.log(products.value)
 
 }
 

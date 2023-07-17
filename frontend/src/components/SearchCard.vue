@@ -1,23 +1,38 @@
 <template>
-<figure class="snip1418"><img :src=imgSrc alt="sample85"/>
-  <!-- <div class="add-to-cart"> <i class="ion-android-add"></i><span>Add to Cart</span></div> -->
-  <figcaption>
-    <h3>{{productName}}</h3>
-    <p>{{productDesc}}</p>
-    <div class="price">
-      {{ productPrice }}
-    </div>
-  </figcaption><a href="#"></a>
-</figure>
+  <figure class="snip1418"><img :src=imgSrc alt="sample85" />
+    <!-- <div class="add-to-cart"> <i class="ion-android-add"></i><span>Add to Cart</span></div> -->
+    <figcaption>
+      <h3>{{ productName }}</h3>
+      <p>{{ productDesc }}</p>
+      <div class="price">
+        {{ productPrice }}
+      </div>
+    </figcaption><a href="#"></a>
+  </figure>
 </template>
 
 <script setup>
 
-import {ref} from 'vue'
-const imgSrc = ref('https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample85.jpg')
-const productName = ref('Pudol Doux')
-const productDesc = ref('All this modern technology just makes people try to do everything at once.')
-const productPrice = ref('$24.00')
+import { ref } from 'vue'
+// const imgSrc = ref('https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample85.jpg')
+const props = defineProps({
+  imgSrc: {
+    type: String,
+    default: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample85.jpg',
+  },
+  productName: {
+    type: String,
+    default: 'Pudol Doux',
+  },
+  productDesc: {
+    type: String,
+    default: 'All this modern technology just makes people try to do everything at once.',
+  },
+  productPrice: {
+    type: String,
+    default: '$24.00',
+  }
+})
 </script>
 
 <style scoped>
@@ -42,17 +57,21 @@ const productPrice = ref('$24.00')
   -webkit-perspective: 20em;
   perspective: 20em;
 }
+
 .snip1418 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
+
 .snip1418 img {
   max-width: 100%;
+  /* height: 20rem; */
   vertical-align: top;
   position: relative;
 }
+
 .snip1418 .add-to-cart {
   position: absolute;
   top: 0;
@@ -70,6 +89,7 @@ const productPrice = ref('$24.00')
   -ms-transform-origin: 100% 0;
   transform-origin: 100% 0;
 }
+
 .snip1418 .add-to-cart i {
   display: inline-block;
   margin-right: 10px;
@@ -80,35 +100,42 @@ const productPrice = ref('$24.00')
   color: #ffffff;
   font-size: 1.4em;
 }
+
 .snip1418 figcaption {
   padding: 20px;
 }
+
 .snip1418 h3,
 .snip1418 p {
   margin: 0;
 }
+
 .snip1418 h3 {
-  font-size: 1.5em;
+  font-size: 1.1em;
   font-weight: 700;
   margin-bottom: 10px;
   text-transform: uppercase;
 }
+
 .snip1418 p {
   font-size: 0.9em;
   letter-spacing: 1px;
   font-weight: 400;
 }
+
 .snip1418 .price {
   font-weight: 500;
   font-size: 1.5em;
   line-height: 48px;
   letter-spacing: 1px;
 }
+
 .snip1418 .price s {
   margin-right: 5px;
   opacity: 0.5;
   font-size: 0.9em;
 }
+
 .snip1418 a {
   position: absolute;
   top: 0;
@@ -116,22 +143,21 @@ const productPrice = ref('$24.00')
   left: 0;
   right: 0;
 }
+
 .snip1418:hover img {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
-@media screen and (max-width: 1200px)  {
-    .snip1418 {
-        width: calc(33% - 10px);
-    }
-   
+@media screen and (max-width: 1200px) {
+  .snip1418 {
+    width: calc(33% - 10px);
+  }
+
 }
 
-@media screen and (max-width: 800px)  {
-    .snip1418 {
-        width: calc(50% - 10px);
-    }
-   
-}
+@media screen and (max-width: 800px) {
+  .snip1418 {
+    width: calc(50% - 10px);
+  }
 
-</style>
+}</style>
