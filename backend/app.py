@@ -2,7 +2,7 @@
 import io
 import uvicorn
 import numpy as np
-import nest_asyncio
+# import nest_asyncio
 from enum import Enum
 
 
@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 # import streamlit as st
-import requests
+# import requests
 import threading
 # from streamlit_option_menu import option_menu
 import cv2
@@ -25,7 +25,7 @@ import torch
 import torchvision.transforms as transforms
 from math import ceil
 from PIL import Image
-import requests
+# import requests
 # from streamlit_app import streamlit_app
 
 import time
@@ -97,7 +97,9 @@ def elastic_search(var: str):
         title = hit["_source"]["Title"]
         url_path = hit["_source"]["Url_path"]
         thumbnail = hit["_source"]["Thumbnail"]
-        result.append(f"{title} {url_path} {thumbnail}")
+        result.append({"title": {title},
+                       "url_path": {url_path},
+                       "thumnail": {thumbnail}})
         
     # es.indices.delete(index=index_name)
     print(f"Elastic search time: {time.time() - start_time}s")
