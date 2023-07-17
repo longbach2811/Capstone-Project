@@ -21,8 +21,6 @@ import argparse, json, os
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
-import skimage
-import skimage.transform
 import torch
 import torchvision.transforms as transforms
 from math import ceil
@@ -142,7 +140,7 @@ def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=6
 async def root():
     return {"message": "Hello World"}
 
-word_dict = json.load(open('..\model\data\coco\word_dict.json', 'r'))
+word_dict = json.load(open('../model/data/coco/word_dict.json', 'r'))
 vocabulary_size = len(word_dict)
 
 encoder = Encoder(network="resnet152")
@@ -150,7 +148,7 @@ decoder = Decoder(vocabulary_size, encoder.dim)
 
 encoder.eval()
 decoder.eval()
-decoder.load_state_dict(torch.load('..\model\model_resnet152_v1\model_resnet152_16.pth', map_location='cpu'))
+decoder.load_state_dict(torch.load('../model/model_resnet152_v1/model_resnet152_16.pth', map_location='cpu'))
 
 @app.post("/search-by-image/")
 async def img_search(file: UploadFile = File(...)):

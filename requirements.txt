@@ -2,7 +2,15 @@ elasticsearch
 pandas
 
 # backend dependencies
-
+fastapi[all]
+nest-asyncio
+requests
+opencv-python
+matplotlib
+torch
+torchvision
+nltk
+tensorboardX
 
 # ai dependencies
 
