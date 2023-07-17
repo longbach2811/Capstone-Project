@@ -12,10 +12,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 
-import streamlit as st
+# import streamlit as st
 import requests
 import threading
-from streamlit_option_menu import option_menu
+# from streamlit_option_menu import option_menu
 import cv2
 import argparse, json, os
 import matplotlib.cm as cm
@@ -28,12 +28,12 @@ import torchvision.transforms as transforms
 from math import ceil
 from PIL import Image
 import requests
-from streamlit_app import streamlit_app
+# from streamlit_app import streamlit_app
 
 import time
 
 import sys
-sys.path.append("../phase1-fashion-captioning")
+sys.path.append("../backup/phase1-fashion-captioning")
 from dataset import pil_loader
 from decoder import Decoder
 from encoder import Encoder
@@ -61,7 +61,7 @@ hosts = ["http://localhost:9200"]
 DB = Elasticsearch(hosts)
 index_name = "hm-data"
 # DB.indices.delete(index=index_name)
-df = pd.read_csv("data_women.csv")
+df = pd.read_csv("../data/data_women.csv")
 docs = df.to_dict(orient="records")
 for doc in docs:
     DB.index(index=index_name, document=doc)
@@ -139,7 +139,7 @@ def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=6
 async def root():
     return {"message": "Hello World"}
 
-word_dict = json.load(open('..\phase1-fashion-captioning\data\coco\word_dict.json', 'r'))
+word_dict = json.load(open('..\model\data\coco\word_dict.json', 'r'))
 vocabulary_size = len(word_dict)
 
 encoder = Encoder(network="resnet152")
@@ -147,7 +147,7 @@ decoder = Decoder(vocabulary_size, encoder.dim)
 
 encoder.eval()
 decoder.eval()
-decoder.load_state_dict(torch.load('..\phase1-fashion-captioning\model_resnet152_v1\model_resnet152_16.pth', map_location='cpu'))
+decoder.load_state_dict(torch.load('..\model\model_resnet152_v1\model_resnet152_16.pth', map_location='cpu'))
 
 @app.post("/search-by-image/")
 async def img_search(file: UploadFile = File(...)):
@@ -195,4 +195,4 @@ if __name__ == "__main__":
 
     fastapi_thread = threading.Thread(target=uvicorn.run, args=("main_ver3:app",), kwargs={"host": "0.0.0.0", "port": 8000, "log_level": "info", "reload": True, "workers": 4})
     fastapi_thread.start()
-    streamlit_app()
+    # streamlit_app()
