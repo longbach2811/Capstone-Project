@@ -11,7 +11,6 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 
-
 # import streamlit as st
 import requests
 import threading
