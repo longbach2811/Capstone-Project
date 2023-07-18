@@ -36,7 +36,7 @@ uvicorn app:app --reload
 - Build frontend using VueJS.
 
 ```
-cd fronend
+cd frontend
 npm install
 npm run dev
 ```
