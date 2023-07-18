@@ -2,8 +2,6 @@
 import io
 import uvicorn
 import numpy as np
-# import nest_asyncio
-from enum import Enum
 
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -11,21 +9,15 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 
-# import streamlit as st
-# import requests
+
 import threading
-# from streamlit_option_menu import option_menu
 import cv2
-import argparse, json, os
-import matplotlib.cm as cm
+import json
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torchvision.transforms as transforms
 from math import ceil
 from PIL import Image
-# import requests
-# from streamlit_app import streamlit_app
 
 import time
 
@@ -75,12 +67,6 @@ def elastic_search(var: str):
             DB.indices.delete(index=index_name)
             print(f"Old DB has been deleted")
             
-    # # Add data
-    # df = pd.read_csv("data_women.csv")
-    # docs = df.to_dict(orient="records")
-
-    # for doc in docs:
-    #     es.index(index=index_name, document=doc)
     
     new_query = {
     "query_string": {
@@ -105,7 +91,6 @@ def elastic_search(var: str):
                        "price": price,
                        })
         
-    # es.indices.delete(index=index_name)
     print(f"Elastic search time: {time.time() - start_time}s")
     return "Got %d Hits:" % res['hits']['total']['value'], result
 
@@ -129,12 +114,9 @@ def generate_caption_visualization(encoder, decoder, img, word_dict, beam_size=6
     alpha = torch.tensor(alpha)
 
     caption = ""
-    plt.axis('off')
     for idx in range(num_words):
         label = sentence_tokens[idx]
         caption = caption + label + " "
-        plt.text(0, 1, label, backgroundcolor='white', fontsize=13)
-        plt.text(0, 1, label, color='black', fontsize=13)
 
         if encoder.network == 'vgg19':
             shape_size = 14
@@ -168,7 +150,6 @@ async def img_search(file: UploadFile = File(...)):
     file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image = Image.fromarray(image)
-    # image.save("abc.png")
     start_time = time.time()
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
     print(f'Model inference time: {time.time() - start_time}s')
@@ -191,15 +172,11 @@ async def prediction(file: UploadFile = File(...)):
     file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image = Image.fromarray(image)
-    # image.save("xxx.png")
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
     return {"image_path": "xxx.png", "caption": output.replace('<start>','').replace('<eos>','')}
 
 
 if __name__ == "__main__":
-    # Init DB
-    # DB = init_db()
 
     fastapi_thread = threading.Thread(target=uvicorn.run, args=("app:app",), kwargs={"host": "0.0.0.0", "port": 8000, "log_level": "info", "reload": True, "workers": 4})
     fastapi_thread.start()
-    # streamlit_app()
