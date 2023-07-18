@@ -172,7 +172,7 @@ async def img_search(file: UploadFile = File(...)):
     start_time = time.time()
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
     print(f'Model inference time: {time.time() - start_time}s')
-    return {"image_path": "abc.png", "result": elastic_search(output.replace('<start>','').replace('<eos>',''))}
+    return {"result": elastic_search(output.replace('<start>','').replace('<eos>',''))}
 
 @app.post("/search-by-word/")
 async def word_search(var:str):
