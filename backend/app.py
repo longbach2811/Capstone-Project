@@ -56,9 +56,9 @@ import pandas as pd
 
 hosts = ["http://localhost:9200"]
 DB = Elasticsearch(hosts)
-index_name = "hm-data"
+index_name = "new-hm-data"
 # DB.indices.delete(index=index_name)
-df = pd.read_csv("../data/new_data_women.csv")
+df = pd.read_csv("../data/new_data_men.csv")
 docs = df.to_dict(orient="records")
 for doc in docs:
     DB.index(index=index_name, document=doc)
@@ -96,9 +96,14 @@ def elastic_search(var: str):
         title = hit["_source"]["Title"]
         url_path = hit["_source"]["Url_path"]
         thumbnail = hit["_source"]["Thumbnail"]
+        desc = hit["_source"]["Desc"]
+        price = hit["_source"]["Price"]
         result.append({"title": title,
                        "url_path": url_path,
-                       "thumbnail": thumbnail})
+                       "thumbnail": thumbnail,
+                       "desc": desc,
+                       "price": price,
+                       })
         
     # es.indices.delete(index=index_name)
     print(f"Elastic search time: {time.time() - start_time}s")
