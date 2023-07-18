@@ -168,7 +168,7 @@ async def img_search(file: UploadFile = File(...)):
     file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image = Image.fromarray(image)
-    image.save("abc.png")
+    # image.save("abc.png")
     start_time = time.time()
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
     print(f'Model inference time: {time.time() - start_time}s')
@@ -191,7 +191,7 @@ async def prediction(file: UploadFile = File(...)):
     file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image = Image.fromarray(image)
-    image.save("xxx.png")
+    # image.save("xxx.png")
     output = generate_caption_visualization(encoder, decoder, image, word_dict, beam_size=64)
     return {"image_path": "xxx.png", "caption": output.replace('<start>','').replace('<eos>','')}
 
