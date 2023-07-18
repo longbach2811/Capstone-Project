@@ -15,7 +15,7 @@
         </form> -->
 
         <div class="upload-container" @input.prevent="onInput">
-          <input type="file" ref="file" accept="image/*" hidden @change="onFileChange">
+          <input type="file" ref="file" accept="image/jpeg" hidden @change="onFileChange">
           <div class="img-container">
             <div v-if="!imagePreviewURL" class="img-area" >
               <i class='bx bxs-cloud-upload icon'></i>
