@@ -18,9 +18,12 @@ Author: Anh T. Tra, Long Bach Hoang, Tam Nguyen Tue
 ```
 
 ### Phase 2: Elastic Search
+- Install Elastic Search in Docker
 ```
 docker pull docker.elastic.co/elasticsearch/elasticsearch:8.8.2
 ```
+
+- Run Elastic Search:
 ```
 docker compose up --build
 ```
