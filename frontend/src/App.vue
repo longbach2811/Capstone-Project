@@ -32,8 +32,8 @@ import { RouterLink, RouterView } from 'vue-router'
           <!-- <li><a href="#">Home</a></li>
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li> -->
-          <li><router-link to="/">Text</router-link></li>
-          <li><router-link to="/">Image</router-link></li>
+          <li><router-link to="/text">Text</router-link></li>
+          <li><router-link to="/image">Image</router-link></li>
         </ul>
       </div>
 

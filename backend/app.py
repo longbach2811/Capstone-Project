@@ -141,10 +141,10 @@ decoder.load_state_dict(torch.load('../model/model_resnet152_v1/model_resnet152_
 @app.post("/search-by-image/")
 async def img_search(file: UploadFile = File(...)):
     global DB
-    filename = file.filename
-    fileExtension = filename.split(".")[-1] in ("jpg", "jpeg", "png")
-    if not fileExtension:
-        raise HTTPException(status_code=415, detail="Unsupported file provided.")
+    # filename = file.filename
+    # fileExtension = filename.split(".")[-1] in ("jpg", "jpeg", "png")
+    # if not fileExtension:
+    #     raise HTTPException(status_code=415, detail="Unsupported file provided.")
     image_stream = io.BytesIO(file.file.read())
     image_stream.seek(0)
     file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
