@@ -23,6 +23,8 @@
             :productName=product.productName
             :imgSrc=product.imgSrc
             :productURL=product.productURL
+            :productDesc=product.productDesc
+            :productPrice=product.productPrice
           ></SearchCard>
           <!-- <SearchCard class="product-card"/>
           <SearchCard class="product-card"/>
@@ -66,6 +68,8 @@ async function onSubmit() {
         productName: x.title,
         imgSrc: x.thumbnail,
         productURL: x.url_path,
+        productDesc: x.desc,
+        productPrice: x.price
       }
     }
   );
