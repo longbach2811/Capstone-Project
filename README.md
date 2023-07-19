@@ -8,7 +8,7 @@ Author: Anh T. Tra, Long Bach Hoang, Tam Nguyen Tue
 ### Phase 1: Application of NLP in Image Captioning for fashion product
 - Model: CNN convolutional feature extractor: ResNet152 and LSTM
 - Link word dictionary: [English word dictionary](https://drive.google.com/drive/folders/1LME6AYCXnBWIHF7pYz1z6AQg1OnYeIyV) and [Vietnamese word dictionary](https://drive.google.com/drive/folders/1vLkEBkkr-xsQkbwNisgvZWJrqJQ0XDTq)
-- Link model: [English model](https://drive.google.com/drive/folders/1nAIZAYkLuMU10ZOmpkKS8yAw5Tjj43In) and [Vietnamse model](https://drive.google.com/drive/folders/1WloIG5p_Jg7oCt7cfAtyHcbd3EhPpiej)
+- Link model: [English model](https://drive.google.com/drive/folders/1nAIZAYkLuMU10ZOmpkKS8yAw5Tjj43In) and [Vietnamese model](https://drive.google.com/drive/folders/1WloIG5p_Jg7oCt7cfAtyHcbd3EhPpiej)
 - File directory:
 ```
 ├───model
